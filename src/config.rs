@@ -59,7 +59,7 @@ fn _encoder() -> Box<PatternEncoder> {
 }
 
 fn _date() -> PatternEncoder {
-    // ? 2024-01-29 14:13:04
+    // ? 2024-01-29
     PatternEncoder::new("{n}{d(%Y-%m-%d)} [{l}] [{f} ~~ {L} {n}~> {m}")
 }
 
