@@ -7,10 +7,9 @@ use log4rs::{
 };
 
 pub fn log_config() {
-    let stdout = ConsoleAppender::builder().build();
+    let stdout = ConsoleAppender::builder().encoder(_encoder()).build();
     let requests = FileAppender::builder()
-        .encoder(Box::new(PatternEncoder::new("{d}[{l}]-> {m}\n")))
-        // .encoder(Box::new(PatternEncoder::default()))
+        .encoder(_encoder())
         .build("log/requests.log")
         .unwrap();
     let config = Config::builder()
@@ -29,4 +28,39 @@ pub fn log_config() {
     }
 
     log::info!("Logrs initialized.");
+}
+
+fn _encoder() -> Box<PatternEncoder> {
+    // ? set encoder to _date_time() or _utc_time() or _local_time()
+    Box::new(_local_date_time())
+}
+
+fn _date() -> PatternEncoder {
+    // ? 2024-01-29 14:13:04
+    PatternEncoder::new("{n}{d(%Y-%m-%d)} [{l}] [{f} ~~ {L} {n}~> {m}")
+}
+
+fn _date_time() -> PatternEncoder {
+    // ? 2024-01-29 14:13:04
+    PatternEncoder::new("{n}{d(%Y-%m-%d %H:%M:%S)} [{l}] [{f} ~~ {L} {n}~> {m}")
+}
+
+fn _utc_time() -> PatternEncoder {
+    // ? 2024-01-29T08:16:51.758199030+00:00
+    PatternEncoder::new("{n}{d(%+)(utc)} [{l}] [{f} ~~ {L} {n}~> {m}")
+}
+
+fn _utc_date_time() -> PatternEncoder {
+    // ? 2024-01-29T08:16:51
+    PatternEncoder::new("{n}{d(%Y-%m-%d %H:%M:%S)(utc)} [{l}] [{f} ~~ {L} {n}~> {m}")
+}
+
+fn _local_time() -> PatternEncoder {
+    // ? 2024-01-29T08:16:51.758199030+00:00
+    PatternEncoder::new("{n}{d(%+)(local)} [{l}] [{f} ~~ {L} {n}~> {m}")
+}
+
+fn _local_date_time() -> PatternEncoder {
+    // ? 2024-01-29T08:16:51
+    PatternEncoder::new("{n}{d(%Y-%m-%d %H:%M:%S)(local)} [{l}] [{f} ~~ {L}] {n}~> {m}")
 }
