@@ -25,8 +25,8 @@ pub fn log_config() {
         .build(root.join("log{}.log").to_str().unwrap(), total_logs + 1)
         .unwrap();
 
-    // let file_size = 1024 * 1024 * 10; // ? 10 MB
-    let file_size = 1024 * 5; // ? 5 KB
+    let file_size = 1024 * 1024 * 10; // ? 10 MB
+                                      // let file_size = 1024 * 5; // ? 5 KB
     let size_trigger = SizeTrigger::new(file_size);
     let policy = CompoundPolicy::new(Box::new(size_trigger), Box::new(roller));
 
