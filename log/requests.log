@@ -1,4 +1,0 @@
-2024-01-28T20:33:17.160904885+06:00[INFO]-> Logrs initialized.
-2024-01-28T20:33:17.160928481+06:00[ERROR]-> This is an error message
-2024-01-28T20:33:17.160955025+06:00[INFO]-> "This is an info message"
-2024-01-28T20:33:17.160967544+06:00[WARN]-> "This is a warning message"
