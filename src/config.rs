@@ -1,5 +1,3 @@
-use std::path::PathBuf;
-
 use log::LevelFilter;
 use log4rs::{
     append::{
@@ -15,10 +13,25 @@ use log4rs::{
     encode::pattern::PatternEncoder,
     Config,
 };
+use std::{env, path::PathBuf};
 
-pub fn log_config() {
+pub fn get_current_dir_path() -> PathBuf {
+    match env::consts::OS {
+        "windows" => PathBuf::from("./"),
+        "linux" => PathBuf::from("./").join("AppName"),
+        "macos" => PathBuf::from("./"),
+        "android" => PathBuf::from("./"),
+        "ios" => PathBuf::from("./"),
+        _ => dirs::home_dir().unwrap().join("AppName"),
+    }
+    // .join("AGCom")
+    // dirs::home_dir().unwrap().join("AGCom")
+}
+
+/// Provider the root path of the project to store the logs.
+pub fn log_config(root: PathBuf) {
     let stdout = ConsoleAppender::builder().encoder(_encoder()).build();
-    let root = PathBuf::from("logs");
+    let root = root.join("logs");
 
     let total_logs = 10;
     let roller = FixedWindowRoller::builder()
