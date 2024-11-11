@@ -24,16 +24,17 @@ pub fn get_current_dir_path() -> PathBuf {
         "macos" => PathBuf::from("./"),
         "android" => PathBuf::from("./"),
         "ios" => PathBuf::from("./"),
-        _ => dirs::home_dir().unwrap().join("AppName"),
+        _ => PathBuf::from("./"),
     }
-    // .join("AGCom")
-    // dirs::home_dir().unwrap().join("AGCom")
 }
 
 /// Provider the root path of the project to store the logs.
-pub fn init_log_config(root: PathBuf) {
+pub fn init_log_config(root: PathBuf) -> PathBuf {
     match env::consts::OS {
-        "android" => init_android_log(),
+        "android" => {
+            init_android_log();
+            dir_path()
+        }
         _ => {
             let stdout = ConsoleAppender::builder().encoder(_encoder()).build();
             let root = root.join("logs");
@@ -67,9 +68,10 @@ pub fn init_log_config(root: PathBuf) {
             if let Err(err) = log4rs::init_config(config) {
                 log::info!("Error initializing logrs: {}", err);
             }
+            log::info!("Logrs initialized.");
+            root
         }
     }
-    log::info!("Logrs initialized.");
 }
 
 fn _encoder() -> Box<PatternEncoder> {
@@ -105,4 +107,46 @@ fn _local_time() -> PatternEncoder {
 fn _local_date_time() -> PatternEncoder {
     // ? 2024-01-29T08:16:51
     PatternEncoder::new("{n}{d(%Y-%m-%d %H:%M:%S)(local)} [{l}] [{f} ~~ {L}] {n}~> {m}")
+}
+
+fn dir_path() -> PathBuf {
+    // if let Some(home) = dirs::home_dir() {
+    //     info!("Home directory: {:?}", home);
+    // }
+    // if let Some(cash) = dirs::cache_dir() {
+    //     info!("Cache directory: {:?}", cash);
+    // }
+    // if let Some(data) = dirs::data_dir() {
+    //     info!("Data directory: {:?}", data);
+    // }
+    // if let Some(desktop) = dirs::desktop_dir() {
+    //     info!("Desktop directory: {:?}", desktop);
+    // }
+    // if let Some(documents) = dirs::document_dir() {
+    //     info!("Documents directory: {:?}", documents);
+    // }
+    // if let Some(diwnload) = dirs::download_dir() {
+    //     info!("Download directory: {:?}", diwnload);
+    // }
+    // if let Some(audio) = dirs::audio_dir() {
+    //     info!("Audio directory: {:?}", audio);
+    // }
+    // if let Some(picture) = dirs::picture_dir() {
+    //     info!("Picture directory: {:?}", picture);
+    // }
+    // if let Some(video) = dirs::video_dir() {
+    //     info!("Video directory: {:?}", video);
+    // }
+    // if let Some(runtime) = dirs::runtime_dir() {
+    //     info!("Runtime directory: {:?}", runtime);
+    // }
+    // if let Some(public) = dirs::public_dir() {
+    //     info!("Public directory: {:?}", public);
+    // }
+    // if let Some(runtime) = dirs::runtime_dir() {
+    //     info!("Runtime directory: {:?}", runtime);
+    // }
+
+    // dirs::home_dir().unwrap()
+    PathBuf::from("./")
 }
