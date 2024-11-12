@@ -8,6 +8,6 @@ use log::LevelFilter;
 pub fn init_android_log() {
     #[cfg(target_os = "android")]
     android_logger::init_once(
-        android_logger::Config::default().with_max_level(log::LevelFilter::Trace),
+        android_logger::Config::default().with_max_level(log::LevelFilter::Info),
     );
 }
